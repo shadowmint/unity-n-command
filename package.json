@@ -1,11 +1,11 @@
 {
-  "name": "unity-TEMPLATE",
+  "name": "unity-n-command",
   "version": "0.0.1",
-  "description": "TEMPLATE",
+  "description": "Commands and delegate helpers",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shadowmint/unity-TEMPLATE.git"
+    "url": "git+https://github.com/shadowmint/unity-n-command.git"
   },
   "files": [
     "index.js",
@@ -15,9 +15,9 @@
   "author": "douglas.linder@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shadowmint/unity-TEMPLATE/issues"
+    "url": "https://github.com/shadowmint/unity-n-command/issues"
   },
-  "homepage": "https://github.com/shadowmint/unity-TEMPLATE",
+  "homepage": "https://github.com/shadowmint/unity-n-command",
   "scripts": {
     "postinstall": "node scripts/postinstall.js"
   },
