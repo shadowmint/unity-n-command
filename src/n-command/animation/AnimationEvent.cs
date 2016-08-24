@@ -1,7 +1,7 @@
 using UnityEngine;
 using N.Package.Events;
 
-namespace N.Package.ATF
+namespace N.Package.Command
 {
   /// Types of events that can be triggered
   public enum AnimationTriggerType

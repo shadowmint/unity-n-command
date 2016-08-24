@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using EventHandler = N.Package.Events.EventHandler;
 
-namespace N.Package.ATF
+namespace N.Package.Command
 {
   /// This class is automatically added for state machines to notify events through.
   [AddComponentMenu("")]

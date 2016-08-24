@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using EventHandler = N.Package.Events.EventHandler;
 
-namespace N.Package.ATF
+namespace N.Package.Command
 {
   /// Base class for behaviours on individual states of state machines.
   public class AnimationTrigger : StateMachineBehaviour
