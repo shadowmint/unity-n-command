@@ -24,6 +24,6 @@
   "dependencies": {
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "unity-n-events": "github:shadowmint/unity-n-events#1.0.0"
+    "unity-n-events": "github:shadowmint/unity-n-events#1.1.0"
   }
 }
