@@ -48,10 +48,29 @@ namespace N.Package.Command
     /// Given a command and a registry, resolve and execute the command.
     public static void Execute(this ICommand command, IServiceRegistry resolver)
     {
+      // Did the caller successfully get their registry?
+      if (resolver == null)
+      {
+        throw new CommandExecutionError("No IServiceRegistry configured for command invokation (NULL)")
+        {
+          Command = command
+        };
+      }
+
+      // Try to resolve the bound handler type, if we can
       var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
       var resolveFunc = resolver.GetType().GetMethod(ResolveMethod).MakeGenericMethod(handlerType);
       var handler = resolveFunc.Invoke(resolver, new object[] {});
-      if (handler == null) return;
+      if (handler == null)
+      {
+        throw new CommandExecutionError(string.Format("Failed to resolve binding for ICommandHandler<{0}>",
+          command.GetType().Name))
+        {
+          Command = command
+        };
+      }
+
+      // Try to invoke the handler
       var invokeMethod = handler.GetType().GetMethod(ExecuteMethod, new[] {command.GetType()});
       try
       {
@@ -59,7 +78,7 @@ namespace N.Package.Command
       }
       catch (TargetInvocationException ex)
       {
-        ThrowInnerException(ex);
+        ThrowInnerException(ex); // Allow the exception to bubble so we get a strack trace
       }
     }
 
