@@ -1,5 +1,6 @@
 #if N_COMMAND_TESTS
 
+using N.Package.Bind;
 using NUnit.Framework;
 using N.Package.Command;
 using N.Package.Events;

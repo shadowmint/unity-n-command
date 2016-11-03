@@ -7,12 +7,5 @@ namespace N.Package.Command
   {
     /// The event handler for this command
     EventHandler EventHandler { get; }
-
-    /// Can this command be executed?
-    /// Override this with command param validation.
-    bool CanExecute();
-
-    /// Execute this command
-    void Execute();
   }
 }
