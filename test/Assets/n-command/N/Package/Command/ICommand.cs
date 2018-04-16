@@ -1,6 +1,4 @@
-﻿using N.Package.Events;
-
-namespace N.Package.Command
+﻿namespace N.Package.Command
 {
   /// <summary>
   /// The base interface for any command type.

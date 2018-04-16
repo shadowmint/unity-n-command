@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using N.Package.Bind;
 using N.Package.Command;
 using N.Package.Test.Runtime;
 using N.Packages.Promises;
-using UnityEditor.PackageManager;
+using UnityEngine;
 
 public class RuntimeTests : RuntimeTest
 {
@@ -46,29 +47,33 @@ public class RuntimeTests : RuntimeTest
     var passed = 0;
     var failed = 0;
     var runner = _registry.Resolve<ICommandHandler<SpamCommand>>();
-    
+
     var tasks = new List<Task>();
+    Action maybeResolved = () =>
+    {
+      if (passed + failed >= 10)
+      {
+        Log($"{passed} passed, {failed} failed (should be 50/50)");
+        Completed();
+      }
+    };
+    
     for (var i = 0; i < 100; i++)
     {
-      tasks.Add(runner.Execute(new SpamCommand()));
-    }
-
-    Task.WhenAll(tasks).Promise().Then(() =>
-    {
-      tasks.ForEach((t) =>
+      var task = runner.Execute(new SpamCommand());
+      Assert(task != null);
+      tasks.Add(task);
+      task.Promise().Then(() =>
       {
-        if (t.IsCompleted)
-        {
-          passed += 1;
-        }
-        else
-        {
-          failed += 1;
-        }
-
-        Log($"Passed: {passed}, Failed: {failed} (should be ~50/50)");
-        Completed();
-      });
-    }, Failed).Dispatch();
+        passed += 1;
+        Debug.Log($"{passed} passed, {failed} failed (should be 50/50)");
+        maybeResolved();
+      }, (err) =>
+      {
+        failed += 1;
+        maybeResolved();
+        Debug.Log($"{passed} passed, {failed} failed (should be 50/50)");
+      }).Dispatch();
+    }
   }
 }
