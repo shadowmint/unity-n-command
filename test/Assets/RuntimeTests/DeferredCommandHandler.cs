@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Threading.Tasks;
+using DefaultNamespace;
 using N.Package.Command;
 using N.Packages.Promises;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class DeferredCommandHandler : ICommandHandler<DeferredCommand, string>, 
   public Task<string> Execute(DeferredCommand command)
   {
     var deferred = new Deferred<string>();
-    AsyncWorker.Run(() => WaitThenResolve(command, deferred));
+    CommandWorker.Run(() => WaitThenResolve(command, deferred));
     return deferred.Task;
   }
 
@@ -24,14 +25,18 @@ public class DeferredCommandHandler : ICommandHandler<DeferredCommand, string>, 
   public Task Execute(SpamCommand command)
   {
     var deferred = new Deferred();
-    AsyncWorker.Run(() => WaitFrameThenResolve(command, deferred));
+    CommandWorker.Run(() => WaitFrameThenResolve(command, deferred));
     return deferred.Task;
   }
 
   private IEnumerator WaitFrameThenResolve(SpamCommand command, Deferred deferred)
   {
     yield return new WaitForEndOfFrame();
-    if (!(Random.value > 0.5f)) yield break;
+    
+    while (Random.value > 0.5f)
+    {
+      yield return new WaitForEndOfFrame();  
+    }    
     
     if (Random.value > 0.5f)
     {

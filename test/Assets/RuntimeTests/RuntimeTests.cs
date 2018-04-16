@@ -50,14 +50,14 @@ public class RuntimeTests : RuntimeTest
 
     var tasks = new List<Task>();
     Action maybeResolved = () =>
-    {
-      if (passed + failed >= 10)
+    {     
+      if (passed + failed >= 100)
       {
-        Log($"{passed} passed, {failed} failed (should be 50/50)");
+        Log($"{passed} passed, {failed} failed (should be ~50/50)");
         Completed();
       }
     };
-    
+
     for (var i = 0; i < 100; i++)
     {
       var task = runner.Execute(new SpamCommand());
@@ -66,13 +66,11 @@ public class RuntimeTests : RuntimeTest
       task.Promise().Then(() =>
       {
         passed += 1;
-        Debug.Log($"{passed} passed, {failed} failed (should be 50/50)");
         maybeResolved();
       }, (err) =>
       {
         failed += 1;
         maybeResolved();
-        Debug.Log($"{passed} passed, {failed} failed (should be 50/50)");
       }).Dispatch();
     }
   }
