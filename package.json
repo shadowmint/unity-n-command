@@ -1,6 +1,6 @@
 {
   "name": "unity-n-command",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Commands and delegate helpers",
   "main": "index.js",
   "repository": {
