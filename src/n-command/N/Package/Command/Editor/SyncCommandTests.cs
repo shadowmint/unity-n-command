@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 using N.Package.Test;
-using N.Packages.Promises;
+using N.Package.Promises;
 using NUnit.Framework;
 
 namespace N.Package.Command.Editor

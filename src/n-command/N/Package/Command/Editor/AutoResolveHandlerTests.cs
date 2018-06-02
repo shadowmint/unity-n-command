@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 using N.Package.Bind;
 using N.Package.Test;
-using N.Packages.Promises;
+using N.Package.Promises;
 using NUnit.Framework;
 
 namespace N.Package.Command.Editor
@@ -20,9 +20,9 @@ namespace N.Package.Command.Editor
 
       this.RunAsyncTest(async () =>
       {
-        await new TestCommandSync().Execute(resolver);
-        await new TestCommandAsync().Execute(resolver);
-        var result = await new TestCommandSyncWithValue().Execute<TestCommandSyncWithValue, string>(resolver);
+        await new TestCommandSync().ExecuteAsync(resolver);
+        await new TestCommandAsync().ExecuteAsync(resolver);
+        var result = await new TestCommandSyncWithValue().ExecuteAsync<TestCommandSyncWithValue, string>(resolver);
         Assert(result == "Hello World");
       });
     }

@@ -2,15 +2,13 @@
 using System.Threading.Tasks;
 using N.Package.Bind;
 using N.Package.Bind.Core;
-using N.Packages.Promises;
-using NUnit.Framework.Constraints;
-using UnityEngine;
+using N.Package.Promises;
 
 namespace N.Package.Command
 {
   public static class CommandExtensions
   {
-    public static async Task Execute<T>(this T command, IServiceRegistry registry) where T : ICommand
+    public static async Task ExecuteAsync<T>(this T command, IServiceRegistry registry) where T : ICommand
     {
       try
       {
@@ -24,7 +22,7 @@ namespace N.Package.Command
       }
     }
 
-    public static async Task<TResult> Execute<T, TResult>(this T command, IServiceRegistry registry) where T : ICommand<TResult>
+    public static async Task<TResult> ExecuteAsync<T, TResult>(this T command, IServiceRegistry registry) where T : ICommand<TResult>
     {
       try
       {
@@ -44,7 +42,6 @@ namespace N.Package.Command
       deferred.Reject(error);
       return deferred.Task;
     }
-
 
     public static Task Reject<T, TResult>(this T commandHandler, CommandExecutionError error) where T : ICommand<TResult>
     {

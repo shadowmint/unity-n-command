@@ -5,7 +5,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "unity-n-command": "..",
+    "unity-n-command": "file:..",
     "unity-n-tests": "github:shadowmint/unity-n-tests"
   }
 }

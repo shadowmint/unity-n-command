@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using N.Package.Bind;
 using N.Package.Command;
 using N.Package.Test.Runtime;
-using N.Packages.Promises;
+using N.Package.Promises;
+using packages.N.Package.Command;
 using UnityEngine;
 
 public class RuntimeTests : RuntimeTest
@@ -21,7 +22,7 @@ public class RuntimeTests : RuntimeTest
   public void CommandWithNoHandlerShouldFail()
   {
     new DeferredCommandWithNoHandler()
-      .Execute(_registry)
+      .ExecuteAsync(_registry)
       .Promise()
       .Then(Unreachable, (err) => Completed())
       .Dispatch();
@@ -31,7 +32,7 @@ public class RuntimeTests : RuntimeTest
   public void ResolveCommandAfterDelay()
   {
     new DeferredCommand() {Value = "Hi!"}
-      .Execute<DeferredCommand, string>(_registry)
+      .ExecuteAsync<DeferredCommand, string>(_registry)
       .Promise()
       .Then((output) =>
       {
@@ -46,11 +47,9 @@ public class RuntimeTests : RuntimeTest
   {
     var passed = 0;
     var failed = 0;
-    var runner = _registry.Resolve<ICommandHandler<SpamCommand>>();
 
-    var tasks = new List<Task>();
     Action maybeResolved = () =>
-    {     
+    {
       if (passed + failed >= 100)
       {
         Log($"{passed} passed, {failed} failed (should be ~50/50)");
@@ -58,12 +57,12 @@ public class RuntimeTests : RuntimeTest
       }
     };
 
+    var service = new CommandService(_registry);
     for (var i = 0; i < 100; i++)
     {
-      var task = runner.Execute(new SpamCommand());
-      Assert(task != null);
-      tasks.Add(task);
-      task.Promise().Then(() =>
+      var promise = service.Execute(new SpamCommand());
+      Assert(promise != null);
+      promise.Then(() =>
       {
         passed += 1;
         maybeResolved();
@@ -71,7 +70,19 @@ public class RuntimeTests : RuntimeTest
       {
         failed += 1;
         maybeResolved();
-      }).Dispatch();
+      });
     }
+  }
+  
+  [RuntimeTest]
+  public void TestForgottenPromiseIsRejected()
+  {
+    var service = new CommandService(_registry);
+    service.SetCommandTimeout(1f);
+    service.Execute(new ForgottenCommand()).Then(Unreachable, (err) =>
+    {
+      // Ok! That was a forgotten command.
+      Completed();
+    });
   }
 }

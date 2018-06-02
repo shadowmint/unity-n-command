@@ -9,3 +9,7 @@ public class DeferredCommand : ICommand<string>
 public class SpamCommand : ICommand
 {
 }
+
+public class ForgottenCommand : ICommand
+{
+}
